@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -368,12 +369,22 @@ body.event-halloween.night { background-image: linear-gradient(#171329, #49304e)
     margin-top: 9px;
 }
 
-.commandLauncher{position:fixed;top:91px;right:10px;z-index:9000;border:0;border-radius:10px;padding:9px 12px;background:#272727;color:#fff;font-weight:bold;cursor:pointer;display:none;box-shadow:0 2px 7px #0005}
-.worldCommandBadge{position:fixed;top:52px;left:50%;transform:translateX(-50%);z-index:8999;background:#292929;color:#fff;border:2px solid #f0c34e;border-radius:9px;padding:7px 11px;font-weight:bold;font-size:13px;box-shadow:0 2px 8px #0005;display:none;white-space:nowrap}
-#commandOverlay{position:fixed;inset:0;background:#0009;z-index:12000;display:none;align-items:center;justify-content:center;padding:15px;box-sizing:border-box}
-.commandBox{background:#fff;border-radius:15px;padding:20px;width:min(440px,100%);box-sizing:border-box;box-shadow:0 8px 30px #0005;color:#222}
-.commandBox input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #aaa;border-radius:8px;font:16px monospace;margin:8px 0}
-.commandResult{min-height:22px;margin:8px 0;font-weight:bold}
+.commandLauncher{position:fixed;top:10px;right:168px;height:27px;padding:0 10px;z-index:1001;border:0;border-radius:8px;background:#272727;color:#fff;font-weight:bold;cursor:pointer;display:none;white-space:nowrap;box-shadow:0 2px 7px #0005}
+.worldCommandBadge{position:fixed;top:52px;left:50%;transform:translateX(-50%);z-index:8999;background:#292929;color:#fff;border:2px solid #f0c34e;border-radius:9px;padding:7px 11px;font-weight:bold;font-size:13px;display:none;white-space:nowrap}
+#commandOverlay{position:fixed;inset:0;background:#0009;z-index:12000;display:none;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
+.commandBox{background:#fff;border-radius:15px;padding:18px;width:min(570px,100%);max-height:calc(100dvh - 24px);overflow:auto;box-sizing:border-box;box-shadow:0 8px 30px #0005;color:#222}
+.commandBox h2{margin:0 0 8px}
+.commandBox p{margin:6px 0;font-size:14px}
+.commandBox input{width:100%;box-sizing:border-box;padding:10px;border:1px solid #aaa;border-radius:8px;font:16px sans-serif;margin:8px 0}
+.commandResult{min-height:22px;margin:8px 0;font-weight:bold;white-space:pre-wrap;overflow-wrap:anywhere}
+#chatMessages{height:min(34vh,250px);min-height:70px;background:#f1f7f0;border:1px solid #c5d8c4;border-radius:9px;overflow-y:auto;overscroll-behavior:contain;padding:4px 10px}
+.chatMessage{display:flex;flex-wrap:wrap;column-gap:8px;padding:6px 0;border-bottom:1px solid #d9e6d7;overflow-wrap:anywhere;white-space:pre-wrap}
+.chatMessage strong{color:#285434}
+.chatMessage.privateMessage{border-left:3px solid #9077bc;padding-left:8px}
+.chatMessage.privateMessage strong{color:#5c3987}
+.chatMessage span{min-width:0;flex:1 1 65%}
+#chatNetworkStatus{color:#455849}
+.commandBox .menuButton{width:auto}
 #commandPlantOverlay{position:fixed;inset:0;background:#000b;z-index:13000;display:none;align-items:center;justify-content:center;padding:14px;box-sizing:border-box}
 .commandPlantBox{width:min(620px,100%);max-height:92vh;overflow:auto;background:#fff;color:#222;border-radius:16px;padding:18px;box-sizing:border-box;box-shadow:0 10px 35px #0008}
 .commandPlantBox textarea{width:100%;min-height:145px;resize:vertical;box-sizing:border-box;padding:12px;border:1px solid #aaa;border-radius:9px;font:14px monospace}
@@ -1215,6 +1226,19 @@ body.game-paused .cloud, body.game-paused #weatherEffect { animation-play-state:
 @media(max-width:600px){#gardenHubBox{max-height:94vh}#gardenHubHeader h2{font-size:17px}#gardenHubContent{padding:10px}}
 
 .plantVariantEmerald{filter:drop-shadow(0 0 8px #00e676) saturate(1.55)}
+@media(max-width:1050px) {
+    #weatherBox{top:47px}
+    .worldCommandBadge{top:82px}
+}
+@media(max-width:650px) {
+    #topBar{top:47px;right:10px;gap:4px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+    #topBar button{flex-shrink:0;padding:7px 8px;font-size:12px}
+    #coinBox{top:88px}
+    #weatherBox{top:88px;left:10px;transform:none}
+    .worldCommandBadge{top:127px}
+    #inventory{top:128px;max-height:calc(100vh - 140px)}
+    #gagGlobalButton{top:127px!important}
+}
 </style>
 
 <style>
@@ -1294,12 +1318,17 @@ body.game-paused .cloud, body.game-paused #weatherEffect { animation-play-state:
             </div>
         </div>
         <div class="settingsGroup">
-            <strong id="commandsTitle">⌨️ Příkazy</strong>
+            <strong id="chatSettingsTitle">💬 Chat</strong>
+            <p id="chatSettingsDescription">Tlačítko chatu se zobrazuje vedle levelu.</p>
+            <label><input type="checkbox" id="chatVisibility" onchange="setChatVisible(this.checked)" checked> <span id="chatVisibilityLabel">Zobrazit tlačítko chatu</span></label>
+            <br><label><input type="checkbox" id="hideChatLinks" onchange="setHideChatLinks(this.checked)"> <span id="hideChatLinksLabel">Skrýt zprávy s odkazy od ostatních hráčů</span></label>
+        </div>
+        <div class="settingsGroup">
+            <strong id="commandsTitle">⌨️ Herní příkazy v chatu</strong>
             <p id="commandsDescription">Vypnutím zablokuješ všechny příkazy včetně programů Command rostlin. Zapnutím je znovu povolíš.</p>
             <div class="settingsChoices">
                 <button id="commandsEnable" class="settingsOption" onclick="setCommandsMode('allow')">Povolit příkazy</button>
-                <button id="commandsHide" class="settingsOption secondary" onclick="setCommandsMode('hide')">Zakázat příkazy</button>
-                <button id="commandsBlock" class="settingsOption secondary" onclick="setCommandsMode('block')">Znefunkčnit příkazy</button>
+                <button id="commandsBlock" class="settingsOption secondary" onclick="setCommandsMode('block')">Vypnout příkazy</button>
             </div>
         </div>
         <div class="settingsGroup">
@@ -1348,18 +1377,23 @@ body.game-paused .cloud, body.game-paused #weatherEffect { animation-play-state:
 
 <div id="weatherEffect"></div>
 <div id="weatherBox">☀️ Den</div>
-<button id="commandLauncher" class="commandLauncher" onclick="openCommandPrompt()">⌨️ Příkazy</button>
+<button type="button" id="commandLauncher" class="commandLauncher" onclick="openCommandPrompt()">💬 Chat</button>
 <div id="worldCommandBadge" class="worldCommandBadge" title="Tento svět obsahuje použití příkazů">⌨️ Příkazy použity</div>
-<div id="commandOverlay">
+<div id="commandOverlay" role="dialog" aria-modal="true" aria-labelledby="commandDialogTitle">
   <div class="commandBox">
-    <h2 id="commandDialogTitle">⌨️ Zadat příkaz</h2>
-    <p id="commandDialogDescription">Napiš příkaz a spusť ho. Příklad: /give seed_potato 40. Často používané značky: / ∞ ~.</p>
-    <input id="commandInput" type="text" placeholder="Sem napište příkaz" autocomplete="off" spellcheck="false">
-    <div id="commandResult" class="commandResult" role="status"></div>
-    <div class="settingsChoices">
-      <button class="menuButton" onclick="runGameCommand()" id="commandRunButton">Spustit</button>
-      <button class="menuButton" style="background:#777" onclick="closeCommandPrompt()" id="commandCancelButton">Zavřít</button>
-    </div>
+    <h2 id="commandDialogTitle">💬 Chat</h2>
+    <p id="commandDialogDescription">Zprávy vidí všichni hráči na tomto serveru. \say jméno zpráva posílá soukromě. \me zobrazí tvoje statistiky.</p>
+    <div id="chatMessages" role="log" tabindex="0" aria-labelledby="commandDialogTitle"></div>
+    <p id="chatNetworkStatus"></p>
+    <form id="chatForm">
+      <input id="commandInput" type="text" placeholder="Napiš zprávu nebo příkaz" aria-labelledby="commandDialogDescription" autocomplete="off" spellcheck="false">
+      <div id="commandResult" class="commandResult" role="status"></div>
+      <div class="settingsChoices">
+        <button type="submit" class="menuButton" id="commandRunButton">Odeslat</button>
+        <button type="button" class="menuButton" id="chatAccountButton" hidden>Přihlásit se</button>
+        <button type="button" class="menuButton" style="background:#777" onclick="closeCommandPrompt()" id="commandCancelButton">Zavřít</button>
+      </div>
+    </form>
   </div>
 </div>
 <div id="commandPlantOverlay">
@@ -1736,11 +1770,17 @@ document.addEventListener("click", event => {
 
 const WORLD_LIST_KEY = "gagWorldsV2";
 const ACTIVE_WORLD_KEY = "gagActiveWorldV2";
+let currentSaveProfile = "";
+const worldListStorageKey = () => currentSaveProfile ? WORLD_LIST_KEY + ":" + currentSaveProfile : WORLD_LIST_KEY;
+const activeWorldStorageKey = () => currentSaveProfile ? ACTIVE_WORLD_KEY + ":" + currentSaveProfile : ACTIVE_WORLD_KEY;
 const SETTINGS_KEY = "gagSettingsV1";
 
 let worlds = {};
 let activeWorldId = null;
-let settings = { labelMode: "hover", commandsEnabled: false, commandsMode: "block", eventMode: "allow" };
+function defaultSettings() {
+    return {labelMode:"hover", commandsEnabled:true, commandsMode:"allow", chatVisible:true, hideChatLinks:false, eventMode:"allow"};
+}
+let settings = defaultSettings();
 
 function createEmptyGame(language) {
     return {
@@ -1764,6 +1804,7 @@ function createEmptyGame(language) {
         CommandSeeds: 0,
         plants: [],
         commandsUsed: false,
+        onlineGiftReceipts: [],
         growthSpeedMultiplier: 1,
         plotsUnlocked: 1,
         activePlotIndex: 0,
@@ -1806,6 +1847,7 @@ function normalizeGame(loaded, languageFallback = "cs") {
     g.achievementsUnlocked = Array.isArray(loaded?.achievementsUnlocked) ? loaded.achievementsUnlocked : [];
     g.playSessionStartedAt = Date.now();
     g.commandsUsed = loaded?.commandsUsed === true;
+    g.onlineGiftReceipts = Array.isArray(loaded?.onlineGiftReceipts) ? loaded.onlineGiftReceipts.filter(id => typeof id === "string") : [];
     if (g.coins !== "Infinity") g.coins = Math.round(g.coins);
     if (g.gems !== "Infinity") g.gems = Math.round(g.gems || 0);
     g.plants.forEach(p => {
@@ -1832,14 +1874,14 @@ function makeWorldId() {
 }
 
 function persistWorldList() {
-    localStorage.setItem(WORLD_LIST_KEY, JSON.stringify(worlds));
-    if (activeWorldId) localStorage.setItem(ACTIVE_WORLD_KEY, activeWorldId);
+    localStorage.setItem(worldListStorageKey(), JSON.stringify(worlds));
+    if (activeWorldId) localStorage.setItem(activeWorldStorageKey(), activeWorldId);
 }
 
 function loadWorldSystem() {
     try {
-        const savedWorlds = localStorage.getItem(WORLD_LIST_KEY);
-        const oldSave = localStorage.getItem(SAVE_KEY);
+        const savedWorlds = localStorage.getItem(worldListStorageKey());
+        const oldSave = currentSaveProfile ? null : localStorage.getItem(SAVE_KEY);
         if (savedWorlds) {
             const parsed = JSON.parse(savedWorlds);
             if (parsed && typeof parsed === "object" && Object.keys(parsed).length) worlds = parsed;
@@ -1852,7 +1894,7 @@ function loadWorldSystem() {
             activeWorldId = id;
             persistWorldList();
         } else {
-            activeWorldId = localStorage.getItem(ACTIVE_WORLD_KEY);
+            activeWorldId = localStorage.getItem(activeWorldStorageKey());
             if (!activeWorldId || !worlds[activeWorldId]) activeWorldId = Object.keys(worlds)[0];
             persistWorldList();
         }
@@ -2136,6 +2178,8 @@ function loadGame() {
 }
 
 function openMenu() {
+    window.gagChat?.leaveOnlineWorld();
+    closeCommandPrompt();
     saveGame();
     document.getElementById("inventory").style.display = "none";
     document.getElementById("shopOverlay").style.display = "none";
@@ -2149,6 +2193,8 @@ function openMenu() {
 
 function closeMenu() {
     document.getElementById("menuOverlay").style.display = "none";
+    updateCommandSettingsUI();
+    window.gagChat?.updatePresence();
 }
 
 function playWorld(id) {
@@ -2156,9 +2202,9 @@ function playWorld(id) {
     saveGame();
     activeWorldId = id;
     game = normalizeGame(worlds[id].game, game.language || "cs");
+    game.language = localStorage.getItem("gag2dLanguage") || game.language;
     persistWorldList();
     closeMenu();
-    updateCommandSettingsUI();
     applyLanguage();
     updateCoins();
     updateInventory();
@@ -2308,7 +2354,7 @@ function deleteWorld(id) {
             worlds[activeWorldId].game = game;
             persistWorldList();
             // Ověření, že změna opravdu přežila zápis do úložiště.
-            const check = JSON.parse(localStorage.getItem(WORLD_LIST_KEY) || "{}");
+            const check = JSON.parse(localStorage.getItem(worldListStorageKey()) || "{}");
             if (check[id]) throw new Error("Smazání se nepodařilo uložit do localStorage.");
             applyLanguage(); updateCoins(); updateInventory(); renderPlants(); renderWorldList();
             showMessage(tr("Svět byl úspěšně smazán.", "World deleted successfully.", "Welt erfolgreich gelöscht."));
@@ -2328,16 +2374,16 @@ function restartWholeGame() {
     })[lang] || "Restart game?", () => {
         try {
             // Odstraň všechna známá uložená data GAG2D; ostatní weby zůstanou nedotčené.
-            [WORLD_LIST_KEY, ACTIVE_WORLD_KEY, SAVE_KEY, SETTINGS_KEY, "gagSoundVolume"].forEach(key => localStorage.removeItem(key));
+            [worldListStorageKey(), activeWorldStorageKey(), ...(!currentSaveProfile ? [SAVE_KEY] : []), SETTINGS_KEY, "gagSoundVolume"].forEach(key => localStorage.removeItem(key));
             worlds = {};
             const id = makeWorldId();
             worlds[id] = { name: tr("Moje zahrada", "My Garden", "Mein Garten"), game: createEmptyGame(lang) };
             activeWorldId = id;
             game = worlds[id].game;
-            settings = { labelMode: "hover", commandsEnabled: false };
+            settings = defaultSettings();
             persistWorldList();
-            const verify = JSON.parse(localStorage.getItem(WORLD_LIST_KEY) || "{}");
-            if (!verify[id] || localStorage.getItem(ACTIVE_WORLD_KEY) !== id) throw new Error("Nová hra se nepodařila uložit.");
+            const verify = JSON.parse(localStorage.getItem(worldListStorageKey()) || "{}");
+            if (!verify[id] || localStorage.getItem(activeWorldStorageKey()) !== id) throw new Error("Nová hra se nepodařila uložit.");
             const menu = document.getElementById("menuOverlay");
             if (menu) menu.style.display = "none";
             const confirm = document.getElementById("gagConfirmOverlay");
@@ -2383,9 +2429,14 @@ function loadSettings() {
     try {
         const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
         if (saved && ["always","hover","never"].includes(saved.labelMode)) settings.labelMode = saved.labelMode;
-        if (saved && ["allow","hide","block"].includes(saved.commandsMode)) settings.commandsMode = saved.commandsMode;
+        if (saved && ["allow","hide","block"].includes(saved.commandsMode)) {
+            settings.commandsMode = saved.commandsMode === "hide" ? "allow" : saved.commandsMode;
+        } else if (saved && typeof saved.commandsEnabled === "boolean") {
+            settings.commandsMode = saved.commandsEnabled ? "allow" : "block";
+        }
         if (saved && ["allow","texturesOff","skip"].includes(saved.eventMode)) settings.eventMode = saved.eventMode;
-        else if (saved && typeof saved.commandsEnabled === "boolean") settings.commandsMode = saved.commandsEnabled ? "allow" : "block";
+        if (typeof saved?.chatVisible === "boolean") settings.chatVisible = saved.chatVisible;
+        if (typeof saved?.hideChatLinks === "boolean") settings.hideChatLinks = saved.hideChatLinks;
         settings.commandsEnabled = settings.commandsMode !== "block";
     } catch(e) {}
     applyLabelMode();
@@ -4290,6 +4341,8 @@ function tr(cs,en,de) {
 }
 
 function chooseLanguage(lang) {
+    const initial = !localStorage.getItem("gag2dLanguage");
+    localStorage.setItem("gag2dLanguage",lang);
     game.language=lang;
     saveGame();
     applyLanguage();
@@ -4299,6 +4352,7 @@ function chooseLanguage(lang) {
     updateHowTo();
     renderWorldList();
     document.getElementById("menuOverlay").style.display="flex";
+    if (initial) window.gagChat?.beginAccountStartup();
 }
 
 function applyLanguage() {
@@ -4382,9 +4436,11 @@ function updateShopLanguage(){
 
 function setupLanguage() {
     const overlay=document.getElementById("languageOverlay");
-    if(!game.language) {
+    const language = localStorage.getItem("gag2dLanguage");
+    if (!language || !translations[language]) {
         overlay.style.display="flex";
     } else {
+        game.language = language;
         overlay.style.display="none";
         applyLanguage();
     }
@@ -4436,22 +4492,27 @@ function updateSettingsLanguage() {
     document.getElementById("labelHover").textContent=data.hover;
     document.getElementById("labelNever").textContent=data.never;
     document.getElementById("settingsBackButton").textContent=data.back;
-    const commandText={
-      cs:{title:"⌨️ Příkazy",desc:"Povolit: příkazy fungují a tlačítko je vidět. Zakázat: příkazy fungují, ale tlačítko není vidět. Znefunkčnit: tlačítko není vidět a nefungují ani příkazy rostlin Command.",enable:"Povolit příkazy",hide:"Zakázat příkazy",block:"Znefunkčnit příkazy"},
-      en:{title:"⌨️ Commands",desc:"Enable: commands work and the button is visible. Hide: commands still work, but the button is hidden. Disable: the button is hidden and Command plant programs do not run.",enable:"Enable commands",hide:"Hide command button",block:"Disable commands"},
-      de:{title:"⌨️ Befehle",desc:"Aktivieren: Befehle funktionieren und die Schaltfläche ist sichtbar. Ausblenden: Befehle funktionieren weiterhin, aber die Schaltfläche ist unsichtbar. Deaktivieren: Die Schaltfläche ist unsichtbar und Command-Pflanzenprogramme werden nicht ausgeführt.",enable:"Befehle aktivieren",hide:"Befehlsschaltfläche ausblenden",block:"Befehle deaktivieren"}
-    }[lang];
-    document.getElementById("commandsTitle").textContent=commandText.title;
-    document.getElementById("commandsDescription").textContent=commandText.desc;
-    document.getElementById("commandsEnable").textContent=commandText.enable;
-    document.getElementById("commandsHide").textContent=commandText.hide;
-    document.getElementById("commandsBlock").textContent=commandText.block;
-    document.getElementById("commandLauncher").textContent=({cs:"⌨️ Příkazy",en:"⌨️ Commands",de:"⌨️ Befehle"})[lang];
-    document.getElementById("commandDialogTitle").textContent=commandText.title;
-    document.getElementById("commandDialogDescription").textContent=({cs:"Napiš příkaz a spusť ho. Příklad: /give seed_potato 40. Často používané značky: / ∞ ~.",en:"Enter a command and run it. Example: /give seed_potato 40. Frequently used symbols: / ∞ ~.",de:"Gib einen Befehl ein und führe ihn aus. Beispiel: /give seed_potato 40. Häufig verwendete Zeichen: / ∞ ~."})[lang];
-    document.getElementById("commandInput").placeholder=({cs:"Sem napište příkaz",en:"Enter a command here",de:"Befehl hier eingeben"})[lang];
-    document.getElementById("commandRunButton").textContent=({cs:"Spustit",en:"Run",de:"Ausführen"})[lang];
-    document.getElementById("commandCancelButton").textContent=({cs:"Zavřít",en:"Close",de:"Schließen"})[lang];
+    document.getElementById("chatSettingsTitle").textContent = "💬 Chat";
+    document.getElementById("chatSettingsDescription").textContent = tr(
+        "Tlačítko chatu se zobrazuje vedle levelu.", "The chat button appears next to your level.", "Die Chat-Schaltfläche erscheint neben deinem Level.");
+    document.getElementById("chatVisibilityLabel").textContent = tr("Zobrazit tlačítko chatu", "Show chat button", "Chat-Schaltfläche anzeigen");
+    document.getElementById("hideChatLinksLabel").textContent = tr("Skrýt zprávy s odkazy od ostatních hráčů",
+        "Hide messages with links from other players", "Nachrichten mit Links von anderen Spielern ausblenden");
+    document.getElementById("commandsTitle").textContent = tr("⌨️ Herní příkazy v chatu", "⌨️ Game commands in chat", "⌨️ Spielbefehle im Chat");
+    document.getElementById("commandsDescription").textContent = tr(
+        "Toto nastavení ovládá herní příkazy a programy Command rostlin. Zprávy v chatu můžeš posílat v obou režimech.",
+        "This setting controls game commands and Command plant programs. Chat messages work in either mode.",
+        "Diese Einstellung steuert Spielbefehle und Programme von Command-Pflanzen. Chat-Nachrichten funktionieren in beiden Modi.");
+    document.getElementById("commandsEnable").textContent = tr("Povolit příkazy", "Enable commands", "Befehle aktivieren");
+    document.getElementById("commandsBlock").textContent = tr("Vypnout příkazy", "Disable commands", "Befehle deaktivieren");
+    document.getElementById("commandDialogDescription").textContent = tr(
+        "Běžný text a /say jsou veřejné. \\say jméno zpráva pošle soukromou zprávu, \\me zobrazí tvoje statistiky. /// je vyhrazené operátorovi (ban, unban, variable, give).",
+        "Plain text is public. \\say name message sends a private message, \\me shows your stats. /say sends a public message.",
+        "Normaler Text ist öffentlich. \\say Name Nachricht schreibt privat, \\me zeigt deine Statistik. /say schreibt öffentlich.");
+    document.getElementById("commandInput").placeholder = tr("Napiš zprávu nebo příkaz", "Enter a message or command", "Nachricht oder Befehl eingeben");
+    document.getElementById("commandRunButton").textContent = tr("Odeslat", "Send", "Senden");
+    document.getElementById("chatAccountButton").textContent = tr("Přihlásit se", "Sign in", "Anmelden");
+    document.getElementById("commandCancelButton").textContent = tr("Zavřít", "Close", "Schließen");
     const eventText={
       cs:{title:"🎉 Sezónní eventy",desc:"Vyber, jak se mají zobrazovat Halloween a Vánoce.",allow:"Povolit eventy",textures:"Zrušit textury eventu",skip:"Úplně vynechat eventy"},
       en:{title:"🎉 Seasonal events",desc:"Choose how Halloween and Christmas events behave.",allow:"Enable events",textures:"Disable event textures",skip:"Skip events completely"},
@@ -4481,13 +4542,25 @@ function setEventMode(mode){
 }
 
 function updateCommandSettingsUI(){
-    const mode=settings.commandsMode|| (settings.commandsEnabled ? "allow" : "block");
-    settings.commandsEnabled = mode !== "block";
-    const buttons={allow:document.getElementById("commandsEnable"),hide:document.getElementById("commandsHide"),block:document.getElementById("commandsBlock")};
-    Object.entries(buttons).forEach(([key,button])=>{if(button)button.classList.toggle("selected",mode===key);});
-    const launcher=document.getElementById("commandLauncher");
-    if(launcher) launcher.style.display=(mode==="allow" && activeWorldId && document.getElementById("menuOverlay").style.display!=="flex")?"block":"none";
+    settings.commandsEnabled = settings.commandsMode !== "block";
+    document.getElementById("commandsEnable").classList.toggle("selected", settings.commandsEnabled);
+    document.getElementById("commandsBlock").classList.toggle("selected", !settings.commandsEnabled);
+    document.getElementById("chatVisibility").checked = settings.chatVisible;
+    document.getElementById("hideChatLinks").checked = settings.hideChatLinks;
+    const showChat = settings.chatVisible && activeWorldId && document.getElementById("menuOverlay").style.display !== "flex";
+    document.getElementById("commandLauncher").style.display = showChat ? "block" : "none";
+    if (!showChat) closeCommandPrompt();
     updateWorldCommandBadge();
+}
+function setChatVisible(visible){
+    settings.chatVisible = !!visible;
+    try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}catch(e){}
+    updateCommandSettingsUI();
+}
+function setHideChatLinks(hidden){
+    settings.hideChatLinks = !!hidden;
+    try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}catch(e){}
+    window.gagChat?.reset();
 }
 function updateWorldCommandBadge(){
     const badge=document.getElementById("worldCommandBadge");
@@ -4507,14 +4580,12 @@ function markWorldCommandsUsed(){
     renderWorldList();
 }
 function setCommandsMode(mode){
-    if(!["allow","hide","block"].includes(mode)) return;
+    if(!["allow","block"].includes(mode)) return;
     settings.commandsMode=mode;
     settings.commandsEnabled=mode!=="block";
     if(mode==="block"){
         const editor=document.getElementById("commandPlantOverlay");
         if(editor) editor.style.display="none";
-        const prompt=document.getElementById("commandOverlay");
-        if(prompt) prompt.style.display="none";
         commandPlantArmed=false;
     }
     try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}catch(e){}
@@ -4522,14 +4593,87 @@ function setCommandsMode(mode){
 }
 function setCommandsEnabled(enabled){ setCommandsMode(enabled ? "allow" : "block"); }
 function openCommandPrompt(){
-    if(!settings.commandsEnabled || !activeWorldId) return;
-    const overlay=document.getElementById("commandOverlay");
-    overlay.style.display="flex";
-    document.getElementById("commandInput").value="";
-    document.getElementById("commandResult").textContent="";
+    if (!settings.chatVisible || !activeWorldId) return;
+    document.getElementById("commandOverlay").style.display = "flex";
+    document.getElementById("commandResult").textContent = "";
     document.getElementById("commandInput").focus();
+    window.gagChat?.open();
 }
-function closeCommandPrompt(){document.getElementById("commandOverlay").style.display="none";}
+function closeCommandPrompt(){
+    const overlay = document.getElementById("commandOverlay");
+    if (overlay.style.display !== "flex") return;
+    overlay.style.display = "none";
+    window.gagChat?.close();
+    if (document.getElementById("commandLauncher").style.display === "block") {
+        document.getElementById("commandLauncher").focus();
+    }
+}
+function showMyChatStats() {
+    const username = window.gagChat?.username();
+    const garden = worlds[activeWorldId]?.name;
+    const format = value => value === "Infinity" ? "∞" : (Number(value) || 0).toLocaleString(game.language || "cs");
+    const minutes = Math.floor(currentPlaySeconds()/60);
+    const lines = [
+        username || tr("Moje statistiky", "My stats", "Meine Statistik"),
+        garden && tr("Svět " + garden, "World " + garden, "Welt " + garden),
+        "⭐ Level " + format(game.level),
+        "💰 " + format(game.coins) + " · 💎 " + format(game.gems),
+        tr("Zasazeno ", "Planted ", "Gepflanzt ") + format(game.totalPlantsPlanted),
+        tr("Sklizeno ", "Harvested ", "Geerntet ") + format(game.totalHarvests),
+        tr("Odehráno ", "Play time ", "Spielzeit ") + format(Math.floor(minutes/60)) + " h " + (minutes%60) + " min"
+    ];
+    document.getElementById("commandResult").textContent = lines.filter(Boolean).join("\n");
+}
+document.getElementById("chatForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const input = document.getElementById("commandInput");
+    const result = document.getElementById("commandResult");
+    const raw = input.value.trim();
+    if (!raw) return;
+    let message = raw;
+    let recipient = null;
+    if (raw.startsWith("///")) {
+        window.gagChat?.runOperatorCommand(raw);
+        return;
+    }
+    if (/^\/say(?:\s|$)/i.test(raw)) {
+        message = raw.slice(4).trim();
+        if (!message) {
+            result.textContent = tr("Použití /say zpráva", "Usage /say message", "Verwendung /say Nachricht");
+            return;
+        }
+    } else if (raw.startsWith("\\")) {
+        if (/^\\me$/i.test(raw)) {
+            showMyChatStats();
+            input.value = "";
+            return;
+        }
+        const match = raw.match(/^\\say\s+([^\s]+)\s+(.+)$/i);
+        if (!match) {
+            result.textContent = tr("Použij \\say uživatel zpráva nebo \\me.",
+                "Use \\say username message or \\me.", "Nutze \\say Benutzername Nachricht oder \\me.");
+            return;
+        }
+        [,recipient,message] = match;
+    } else if (raw.startsWith("/")) {
+        if (!settings.commandsEnabled) {
+            result.textContent = tr("Herní příkazy jsou vypnuté. Povol je v nastavení.",
+                "Game commands are disabled. Enable them in Settings.", "Spielbefehle sind deaktiviert. Aktiviere sie in den Einstellungen.");
+            return;
+        }
+        result.textContent = "";
+        runGameCommand();
+        input.value = "";
+        input.focus();
+        return;
+    }
+    if (message.length > 300) {
+        result.textContent = tr("Zpráva může mít nejvýš 300 znaků.",
+            "Messages can have up to 300 characters.", "Nachrichten dürfen höchstens 300 Zeichen haben.");
+        return;
+    }
+    window.gagChat?.send(message,recipient,raw);
+});
 function commandMessage(key, detail={}){
  const lang=game.language||"cs";
  const words={
@@ -4544,6 +4688,11 @@ function runGameCommand(){
  const result=document.getElementById("commandResult");
  const lang=game.language||"cs";
  const say=(cs,en,de)=>{result.textContent=({cs,en,de})[lang]||cs;};
+
+ if (raw === "/") {
+  markWorldCommandsUsed();
+  return;
+ }
 
  // Vlastní textury: //texture save exportuje všechny uložené textury, //texture load CODE je načte.
  const textureSaveMatch=raw.match(/^\/\/texture\s+save$/i);
@@ -5021,8 +5170,18 @@ document.addEventListener("keydown",function(e){
  }
  const plantOverlay=document.getElementById("commandPlantOverlay");
  const commandOverlay=document.getElementById("commandOverlay");
- if(e.key==="Enter"&&commandOverlay?.style.display==="flex")runGameCommand();
- if(e.key==="Escape"){if(commandOverlay?.style.display==="flex")closeCommandPrompt();if(plantOverlay?.style.display==="flex")closeCommandPlant();}
+ if(commandOverlay?.style.display==="flex"){
+   if(e.key==="Escape"){e.preventDefault();closeCommandPrompt();}
+   if(e.key==="Tab"){
+     const controls=[...commandOverlay.querySelectorAll("input, button, [tabindex]")].filter(el=>!el.hidden && !el.disabled);
+     const first=controls[0],last=controls.at(-1);
+     if(e.shiftKey && document.activeElement===first){e.preventDefault();last?.focus();}
+     if(!e.shiftKey && document.activeElement===last){e.preventDefault();first?.focus();}
+   }
+   e.stopPropagation();
+   return;
+ }
+ if(e.key==="Escape"&&plantOverlay?.style.display==="flex")closeCommandPlant();
  // Mezerník zachytáváme nezávisle na tom, které skryté tlačítko/textarea zůstalo aktivní.
  // Pokud je otevřený editor Command rostliny, mezerník normálně píše do textového pole.
  if(e.code==="Space" && !e.repeat && plantOverlay?.style.display!=="flex"){
@@ -5238,29 +5397,606 @@ startWeatherSystem();
 
 // Pokud už je jazyk vybraný, menu zůstává jako úvodní obrazovka.
 document.getElementById("menuOverlay").style.display = "flex";
+updateCommandSettingsUI();
 
 
 /* ===== GAG2D GLOBAL LEADERBOARDS ===== */
 (function(){
- const API='';
  const authKey='gag2dGlobalAuth'; let auth=null;
  try{auth=JSON.parse(localStorage.getItem(authKey)||'null')}catch(e){}
+ const progressMeta = () => 'gag2dProgress:' + currentSaveProfile;
+ let cloudVersion = 0;
+ let synchronizedSave = null;
+ let saveTimer = null;
+ let pendingRequest = null;
+ let startupLogin = false;
+ let switchingAccount = false;
+ let saveConflict = false;
+ const worldSnapshot = () => JSON.stringify({worlds,activeWorldId});
+ const networkTimeout = () => AbortSignal.timeout(10000);
+ const languageChoice = () => localStorage.getItem('gag2dLanguage');
+ const savedObject = key => {
+    try { return JSON.parse(localStorage.getItem(key) || 'null'); }
+    catch { return null; }
+ };
+
+ function refreshWorlds() {
+    game.language = languageChoice() || game.language || 'cs';
+    openMenu();
+    applyLanguage();
+    updateCoins();
+    updateInventory();
+    renderPlants();
+    updateWeatherBox();
+ }
+
+ function saveFingerprint(save) {
+    if (save === null) return null;
+    let hash = 2166136261;
+    for (let index = 0; index < save.length; index++) hash = Math.imul(hash ^ save.charCodeAt(index),16777619);
+    return save.length + ':' + (hash >>> 0);
+ }
+
+ function setCloudBaseline(version,save) {
+    cloudVersion = version;
+    synchronizedSave = save;
+    try { localStorage.setItem(progressMeta(),JSON.stringify({version,fingerprint:saveFingerprint(save)})); }
+    catch { /* Místní světy se ukládají samostatně. */ }
+ }
+
+ function readLocalProfile() {
+    const data = savedObject(worldListStorageKey());
+    if (!data || !Object.keys(data).length) return null;
+    const selected = localStorage.getItem(activeWorldStorageKey());
+    return JSON.stringify({worlds:data,activeWorldId:Object.hasOwn(data,selected) ? selected : Object.keys(data)[0]});
+ }
+
+ function keepConflictingCopy(save) {
+    localStorage.setItem(progressMeta()+':older-local',save);
+    showMessage(tr('Na účtu je novější záloha. Místní rozehranou kopii jsem ponechal v tomto prohlížeči.',
+        'There is a newer account save. The local copy was kept in this browser.',
+        'Das Konto hat einen neueren Spielstand. Die lokale Kopie bleibt in diesem Browser.'));
+ }
+
+ async function restoreAccountProgress() {
+    const token = auth.token;
+    const remote = await req('/progress',{signal:networkTimeout()});
+    if (auth?.token !== token) return;
+    const previousProfile = currentSaveProfile;
+    const nextProfile = encodeURIComponent(remote.username);
+    currentSaveProfile = nextProfile;
+    let chosen;
+    try {
+        const local = readLocalProfile();
+        const meta = savedObject(progressMeta());
+        chosen = remote.save || local || worldSnapshot();
+        if (remote.save && local && local !== remote.save) {
+            const locallyChanged = saveFingerprint(local) !== meta?.fingerprint;
+            if (locallyChanged && meta?.version === remote.version) chosen = local;
+            else if (locallyChanged) keepConflictingCopy(local);
+        }
+        const profile = JSON.parse(chosen);
+        localStorage.setItem(worldListStorageKey(),JSON.stringify(profile.worlds));
+        localStorage.setItem(activeWorldStorageKey(),profile.activeWorldId);
+        setCloudBaseline(remote.version,remote.save);
+        saveConflict = false;
+    } catch (error) {
+        currentSaveProfile = previousProfile;
+        throw error;
+    }
+    auth.username = remote.username;
+    worlds = {};
+    loadWorldSystem();
+    refreshWorlds();
+    scheduleProgress();
+ }
+
+ async function sendProgress(keepalive = false) {
+    if (!auth?.token || !currentSaveProfile || saveConflict) return false;
+    if (pendingRequest) return pendingRequest;
+    const save = worldSnapshot();
+    if (save === synchronizedSave) return true;
+    const token = auth.token, profile = currentSaveProfile;
+    const body = JSON.stringify({version:cloudVersion,save});
+    if (keepalive && new Blob([body]).size > 60000) return false;
+    const sameAccount = () => auth?.token === token && currentSaveProfile === profile;
+    pendingRequest = (async () => {
+        try {
+            const result = await req('/progress',{method:'PUT',body,keepalive,
+                ...(keepalive ? {} : {signal:networkTimeout()})});
+            if (sameAccount()) setCloudBaseline(result.version,save);
+            return true;
+        } catch (error) {
+            if (!sameAccount()) return false;
+            if (error.status === 409) {
+                try {
+                    const latest = await req('/progress',{signal:networkTimeout()});
+                    if (sameAccount() && latest.save === save) {
+                        setCloudBaseline(latest.version,save);
+                        return true;
+                    }
+                } catch { /* Při dalším přihlášení se ověří verze. */ }
+                if (sameAccount()) {
+                    saveConflict = true;
+                    showMessage(tr('Záloha účtu se změnila v jiné kartě nebo prohlížeči. Tento postup je uložený místně.',
+                        'The account was saved in another tab or browser. This progress is saved locally.',
+                        'Das Konto wurde in einem anderen Tab oder Browser gespeichert. Dieser Spielstand ist lokal gespeichert.'));
+                }
+            }
+            return false;
+        } finally {
+            pendingRequest = null;
+        }
+    })();
+    return pendingRequest;
+ }
+
+ function savedReceiptsContain(ids) {
+    if (!synchronizedSave) return false;
+    const copy = JSON.parse(synchronizedSave);
+    const receipts = new Set(Object.values(copy.worlds).flatMap(world => world.game?.onlineGiftReceipts || []));
+    return ids.every(id => receipts.has(id));
+ }
+
+ function scheduleProgress() {
+    if (!auth?.token || !currentSaveProfile || saveTimer || saveConflict) return;
+    saveTimer = setTimeout(async () => {
+        saveTimer = null;
+        if (await sendProgress() && synchronizedSave !== worldSnapshot()) scheduleProgress();
+    },1200);
+ }
+
+ const persistLocalWorlds = persistWorldList;
+ persistWorldList = function () {
+    persistLocalWorlds();
+    scheduleProgress();
+ };
+ setInterval(scheduleProgress,15000);
+ window.addEventListener('pagehide',() => {
+    if (currentSaveProfile && worlds[activeWorldId]) {
+        worlds[activeWorldId].game = game;
+        try { persistLocalWorlds(); } catch { /* Zkus alespoň odeslat stav přímo na server. */ }
+        sendProgress(true);
+    }
+ });
+
+ function returnToGuest() {
+    if (!currentSaveProfile) return;
+    currentSaveProfile = '';
+    cloudVersion = 0;
+    synchronizedSave = null;
+    saveConflict = false;
+    worlds = {};
+    loadWorldSystem();
+    refreshWorlds();
+ }
+
+ function finishStartupLogin() {
+    startupLogin = false;
+    document.getElementById('gagGlobalOverlay').style.display = 'none';
+ }
+
+ function startLoginPrompt() {
+    addGlobalUI();
+    startupLogin = true;
+    document.getElementById('gagGlobalOverlay').style.display = 'flex';
+    authForm();
+ }
+
+ async function beginAccountStartup() {
+    if (!languageChoice()) return;
+    startLoginPrompt();
+    if (!auth?.token) return;
+    switchingAccount = true;
+    authForm();
+    try {
+        await restoreAccountProgress();
+        localStorage.setItem(authKey,JSON.stringify(auth));
+        finishStartupLogin();
+    } catch {
+        forgetChatAccount();
+        authForm();
+        document.getElementById('gagAuthStatus').textContent = tr(
+            'Účet se nepodařilo načíst. Přihlas se znovu nebo pokračuj jako host.',
+            'Could not load the account. Sign in again or continue as a guest.',
+            'Das Konto konnte nicht geladen werden. Melde dich erneut an oder spiele als Gast.');
+    } finally {
+        switchingAccount = false;
+    }
+ }
  function addGlobalUI(){
   if(document.getElementById('gagGlobalButton'))return;
   const b=document.createElement('button');b.id='gagGlobalButton';b.textContent='🌍 TOP';b.style.cssText='position:fixed;right:10px;top:92px;z-index:1100;border:0;border-radius:9px;padding:9px 12px;background:#fff;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px #0003';b.onclick=openGlobal;document.body.appendChild(b);
   const o=document.createElement('div');o.id='gagGlobalOverlay';o.style.cssText='display:none;position:fixed;inset:0;background:#0009;z-index:15000;align-items:center;justify-content:center;padding:12px;font-family:Arial';
-  o.innerHTML=`<div style="background:white;border-radius:15px;padding:18px;width:min(680px,96vw);max-height:90vh;overflow:auto"><h2 style="margin-top:0;text-align:center">🌍 Grow a Garden 2D – Globální TOP</h2><div id="gagGlobalAuth"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0"><button data-board="coins">💰 TOP 3 mince</button><button data-board="gems">💎 TOP 3 drahokamy</button><button data-board="level">⭐ TOP 3 level</button></div><div id="gagGlobalTables">Přihlas se pro zobrazení žebříčků.</div><p style="font-size:12px;color:#666">Počítá se pouze zahrada, kterou výslovně vybereš. Nový výběr nahradí předchozí.</p><button id="gagGlobalClose" style="width:100%;padding:10px;border:0;border-radius:8px;background:#ddd;font-weight:bold">Zavřít</button></div>`;
+  o.innerHTML=`<div style="background:white;border-radius:15px;padding:18px;width:min(680px,96vw);max-height:90vh;overflow:auto"><h2 id="gagGlobalTitle" style="margin-top:0;text-align:center">🌍 Grow a Garden 2D – Globální TOP</h2><div id="gagGlobalAuth"></div><div id="gagRankPanel"><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0"><button data-board="coins">💰 TOP 3 mince</button><button data-board="gems">💎 TOP 3 drahokamy</button><button data-board="level">⭐ TOP 3 level</button></div><div id="gagGlobalTables">Načítám žebříček…</div><p style="font-size:12px;color:#666">Počítá se pouze zahrada, kterou výslovně vybereš. Nový výběr nahradí předchozí.</p></div><button id="gagGlobalClose" style="width:100%;padding:10px;border:0;border-radius:8px;background:#ddd;font-weight:bold">Zavřít</button></div>`;
   document.body.appendChild(o);o.querySelector('#gagGlobalClose').onclick=()=>o.style.display='none';o.querySelectorAll('[data-board]').forEach(x=>x.onclick=()=>loadBoard(x.dataset.board));
  }
- async function req(path,opts={}){const r=await fetch('/api'+path,{...opts,headers:{'Content-Type':'application/json',...(auth?.token?{Authorization:'Bearer '+auth.token}:{}),...(opts.headers||{})}});const j=await r.json().catch(()=>({error:'Neplatná odpověď serveru'}));if(!r.ok)throw Error(j.error||'Chyba serveru');return j}
- function authForm(){const el=document.getElementById('gagGlobalAuth');if(auth?.token){el.innerHTML=`<p>Přihlášen/a jako <b>${esc(auth.username)}</b> <button id="gagLogout">Odhlásit</button></p><button id="gagSelectGarden">🌱 Vybrat tuto zahradu do žebříčku</button> <span id="gagSelectStatus"></span>`;el.querySelector('#gagLogout').onclick=()=>{auth=null;localStorage.removeItem(authKey);authForm()};el.querySelector('#gagSelectGarden').onclick=selectGarden}else{el.innerHTML=`<p><input id="gagUser" placeholder="Uživatelské jméno" maxlength="20"> <input id="gagPass" type="password" placeholder="Heslo" maxlength="100"></p><button id="gagRegister">Vytvořit účet</button> <button id="gagLogin">Přihlásit</button> <span id="gagAuthStatus"></span>`;el.querySelector('#gagRegister').onclick=()=>authenticate('register');el.querySelector('#gagLogin').onclick=()=>authenticate('login')}}
- async function authenticate(mode){try{auth=await req('/'+mode,{method:'POST',body:JSON.stringify({username:document.getElementById('gagUser').value.trim(),password:document.getElementById('gagPass').value})});localStorage.setItem(authKey,JSON.stringify(auth));authForm();loadBoard('coins')}catch(e){document.getElementById('gagAuthStatus').textContent=e.message}}
- async function selectGarden(){try{saveGame();await req('/select-garden',{method:'POST',body:JSON.stringify({gardenId:activeWorldId+':'+(game.activePlotIndex||0),coins:game.coins,gems:game.gems,level:game.level})});document.getElementById('gagSelectStatus').textContent='✓ Vybráno';loadBoard('coins')}catch(e){document.getElementById('gagSelectStatus').textContent=e.message}}
- async function loadBoard(type){try{const j=await req('/leaderboard/'+type),label={coins:'Mince',gems:'Drahokamy',level:'Level'}[type];document.getElementById('gagGlobalTables').innerHTML='<h3>TOP 3 – '+label+'</h3><ol>'+j.rows.map(x=>'<li><b>'+esc(x.username)+'</b> — '+Number(x.value).toLocaleString()+'</li>').join('')+'</ol><p>Tvůj výsledek: '+(j.mine?Number(j.mine.value).toLocaleString()+' ('+j.mine.rank+'. místo)':'Zatím nemáš vybranou zahradu.')+'</p>'}catch(e){document.getElementById('gagGlobalTables').textContent=e.message}}
+ async function req(path,opts={}){const r=await fetch('/api'+path,{...opts,headers:{'Content-Type':'application/json',...(auth?.token?{Authorization:'Bearer '+auth.token}:{}),...(opts.headers||{})}});const j=await r.json().catch(()=>({error:'Neplatná odpověď serveru'}));if(!r.ok){const error=Error(j.error||'Chyba serveru');error.status=r.status;throw error}return j}
+ function authForm() {
+    const el = document.getElementById('gagGlobalAuth');
+    const close = document.getElementById('gagGlobalClose');
+    document.getElementById('gagGlobalTitle').textContent = startupLogin
+        ? tr('Přihlášení','Sign in','Anmeldung') : '🌍 Grow a Garden 2D – Globální TOP';
+    document.getElementById('gagRankPanel').hidden = startupLogin;
+    close.hidden = startupLogin && switchingAccount;
+    close.textContent = startupLogin ? tr('Možná později','Maybe later','Vielleicht später') : tr('Zavřít','Close','Schließen');
+    close.onclick = finishStartupLogin;
+    if (startupLogin && switchingAccount) {
+        el.textContent = tr('Načítám uložené zahrady…','Loading saved gardens…','Gespeicherte Gärten werden geladen…');
+        return;
+    }
+    if (auth?.token && currentSaveProfile) {
+        el.innerHTML = `<p>Přihlášen/a jako <b>${esc(auth.username)}</b> ${auth.operator?" · Operátor":""} <button id="gagLogout">Odhlásit</button> <span id="gagLogoutStatus"></span></p><button id="gagSelectGarden">🌱 Vybrat tuto zahradu do žebříčku</button> <span id="gagSelectStatus"></span>`;
+        el.querySelector('#gagLogout').onclick = logout;
+        el.querySelector('#gagSelectGarden').onclick = selectGarden;
+        return;
+    }
+    const prompt = startupLogin ? tr(
+        'Přihlášení ukládá zahrady k účtu a zpřístupní psaní do chatu a soutěž v žebříčku. Jako host můžeš hrát a ukládat v tomto prohlížeči.',
+        'Sign in to save gardens to your account, write in chat and join the leaderboard. Guests can play and save in this browser.',
+        'Mit einem Konto speicherst du Gärten online und kannst chatten und an der Rangliste teilnehmen. Als Gast speicherst du in diesem Browser.'
+    ) : '';
+    el.innerHTML = `<p>${prompt}</p><form id="gagAuthForm"><p><label>${tr('Uživatelské jméno','Username','Benutzername')} <input id="gagUser" autocomplete="username" maxlength="20" required></label></p><p><label>${tr('Heslo','Password','Passwort')} <input id="gagPass" type="password" autocomplete="current-password" maxlength="100" required></label></p><button type="submit">${tr('Přihlásit se','Sign in','Anmelden')}</button> <button type="button" id="gagRegister">${tr('Vytvořit účet','Create an account','Konto erstellen')}</button> <span id="gagAuthStatus" role="status"></span></form>`;
+    const form = el.querySelector('#gagAuthForm');
+    form.onsubmit = event => { event.preventDefault(); authenticate('login'); };
+    el.querySelector('#gagRegister').onclick = () => { if (form.reportValidity()) authenticate('register'); };
+ }
+
+ async function authenticate(mode) {
+    if (switchingAccount) return;
+    switchingAccount = true;
+    const form = document.getElementById('gagAuthForm');
+    const status = document.getElementById('gagAuthStatus');
+    const body = JSON.stringify({username:document.getElementById('gagUser').value.trim(),password:document.getElementById('gagPass').value});
+    const buttons = [...form.querySelectorAll('button'),document.getElementById('gagGlobalClose')];
+    buttons.forEach(button => { button.disabled = true; });
+    status.textContent = tr('Načítám účet…','Loading account…','Konto wird geladen…');
+    try {
+        auth = await req('/'+mode,{method:'POST',body,signal:networkTimeout()});
+        await restoreAccountProgress();
+        localStorage.setItem(authKey,JSON.stringify(auth));
+        if (startupLogin) finishStartupLogin();
+        authForm();
+        if (document.getElementById('gagGlobalOverlay').style.display === 'flex') loadBoard('coins');
+    } catch (error) {
+        forgetChatAccount();
+        status.textContent = error.message;
+    } finally {
+        switchingAccount = false;
+        buttons.forEach(button => { button.disabled = false; });
+    }
+ }
+ async function logout() {
+    const token = auth?.token;
+    const button = document.getElementById('gagLogout');
+    button.disabled = true;
+    try {
+        saveGame();
+        await sendProgress();
+        if (synchronizedSave !== worldSnapshot()) await sendProgress();
+        await req('/logout',{method:'POST',signal:AbortSignal.timeout(8000)});
+    } catch (error) {
+        if (error.status !== 401) {
+            document.getElementById('gagLogoutStatus').textContent = 'Odhlášení se nepodařilo. Zkus to znovu.';
+            button.disabled = false;
+            return;
+        }
+    }
+    if (auth?.token === token) {
+        presenceRevision++;
+        forgetChatAccount();
+        authForm();
+        loadBoard('coins');
+    }
+ }
+ async function selectGarden(){try{saveGame();await req('/select-garden',{method:'POST',body:JSON.stringify({gardenId:currentGardenId(),coins:game.coins,gems:game.gems,level:game.level})});document.getElementById('gagSelectStatus').textContent='✓ Vybráno';loadBoard('coins')}catch(e){document.getElementById('gagSelectStatus').textContent=e.message}}
+ async function loadBoard(type){try{const j=await req('/leaderboard/'+type),label={coins:'Mince',gems:'Drahokamy',level:'Level'}[type];document.getElementById('gagGlobalTables').innerHTML='<h3>TOP 3 – '+label+'</h3><ol>'+j.rows.map(x=>'<li><b>'+esc(x.username)+'</b> — '+Number(x.value).toLocaleString()+'</li>').join('')+'</ol><p>Tvůj výsledek: '+(j.mine?Number(j.mine.value).toLocaleString()+' ('+j.mine.rank+'. místo)':auth?.token?'Zatím nemáš vybranou zahradu.':'Přihlas se pro zobrazení vlastního umístění.')+'</p>'}catch(e){document.getElementById('gagGlobalTables').textContent=e.message}}
  function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
- const oldSave=saveGame;saveGame=function(){oldSave();if(auth?.token&&game)req('/update-selected',{method:'POST',body:JSON.stringify({coins:game.coins,gems:game.gems,level:game.level})}).catch(()=>{})};
- function openGlobal(){document.getElementById('gagGlobalOverlay').style.display='flex';authForm();if(auth?.token)loadBoard('coins')}
- document.addEventListener('DOMContentLoaded',addGlobalUI);if(document.readyState!=='loading')addGlobalUI();
+ const oldSave = saveGame;
+ let lastScore = null;
+ let scoreRequest = null;
+ saveGame = function () {
+    oldSave();
+    if (!auth?.token || !currentSaveProfile || !activeWorldId || scoreRequest) return;
+    const token = auth.token;
+    const body = JSON.stringify({gardenId:currentGardenId(),coins:game.coins,gems:game.gems,level:game.level});
+    if (lastScore?.token === token && lastScore.body === body) return;
+    scoreRequest = req('/update-selected',{method:'POST',body,signal:networkTimeout()})
+        .then(() => { lastScore = {token,body}; })
+        .catch(() => {})
+        .finally(() => { scoreRequest = null; });
+ };
+ function openGlobal(){startupLogin=false;document.getElementById('gagGlobalOverlay').style.display='flex';authForm();loadBoard('coins')}
+ const chatLog = document.getElementById('chatMessages');
+ const chatNetwork = document.getElementById('chatNetworkStatus');
+ const chatAccount = document.getElementById('chatAccountButton');
+ let chatTimer = null;
+ let chatPolling = false;
+ let chatPosting = false;
+ let chatLastId = 0;
+ let chatView = 0;
+
+ function isChatOpen() {
+    return document.getElementById('commandOverlay').style.display === 'flex';
+ }
+
+ function renderChatMessages(messages) {
+    const latest = messages.at(-1)?.id || 0;
+    if (latest < chatLastId) {
+        chatLog.replaceChildren();
+        chatLastId = 0;
+    }
+    const atBottom = chatLog.scrollHeight - chatLog.scrollTop - chatLog.clientHeight < 30;
+    for (const message of messages) {
+        if (message.id <= chatLastId) continue;
+        const row = document.createElement('div');
+        row.className = message.recipient ? 'chatMessage privateMessage' : 'chatMessage';
+        const author = document.createElement('strong');
+        author.textContent = message.recipient
+            ? tr('Soukromě', 'Private', 'Privat') + ' · ' + message.username + ' → ' + message.recipient
+            : message.username;
+        const body = document.createElement('span');
+        body.textContent = message.body;
+        row.append(author,body);
+        chatLog.appendChild(row);
+        chatLastId = message.id;
+    }
+    while (chatLog.childElementCount > 100) chatLog.firstElementChild.remove();
+    if (atBottom) chatLog.scrollTop = chatLog.scrollHeight;
+ }
+
+ function showChatAccount(needed) {
+    chatAccount.hidden = !needed;
+ }
+
+ function clearChatView() {
+    chatView++;
+    chatLastId = 0;
+    chatLog.replaceChildren();
+ }
+
+ function forgetChatAccount() {
+    auth = null;
+    localStorage.removeItem(authKey);
+    returnToGuest();
+    clearChatView();
+    showChatAccount(true);
+ }
+
+ async function refreshChat() {
+    if (chatPolling || !isChatOpen()) return;
+    clearTimeout(chatTimer);
+    chatPolling = true;
+    const view = chatView;
+    const token = auth?.token;
+    try {
+        const query = settings.hideChatLinks ? '?links=hide' : '';
+        const data = await req('/chat' + query, {cache:'no-store', signal:AbortSignal.timeout(10000)});
+        if (!isChatOpen() || view !== chatView || token !== auth?.token) return;
+        renderChatMessages(data.messages);
+        chatNetwork.textContent = !auth?.token
+            ? tr('Zprávy můžeš číst. Pro odeslání se přihlas.', 'Sign in to send a message.', 'Melde dich an, um zu schreiben.')
+            : data.messages.length ? '' : tr('V chatu zatím nejsou zprávy.', 'No chat messages yet.', 'Es gibt noch keine Nachrichten.');
+    } catch (error) {
+        if (view !== chatView || token !== auth?.token) return;
+        if (error.status === 401) forgetChatAccount();
+        if (isChatOpen()) chatNetwork.textContent = tr('Chat se nepodařilo načíst. Zkouším to znovu.',
+            'Could not load the chat. Retrying.', 'Der Chat konnte nicht geladen werden. Neuer Versuch.');
+    } finally {
+        chatPolling = false;
+        if (isChatOpen()) chatTimer = setTimeout(refreshChat,view === chatView ? 4000 : 0);
+    }
+ }
+
+ chatAccount.onclick = () => {
+    closeCommandPrompt();
+    openGlobal();
+ };
+
+ let sendingOperatorCommand = false;
+ let presenceRequest = null;
+ let presenceRevision = 0;
+ const onlineActive = () => auth?.token && currentSaveProfile && activeWorldId && !document.hidden &&
+    document.getElementById('menuOverlay').style.display !== 'flex';
+
+ function currentGardenId() {
+    return activeWorldId ? activeWorldId + ':' + (game.activePlotIndex || 0) : null;
+ }
+
+ function saveOnlineChanges({gifts = [],wallet = []}, expectedWorld, stillActive) {
+    if ((!gifts.length && !wallet.length) || activeWorldId !== expectedWorld || !stillActive()) return [];
+    const world = worlds[activeWorldId];
+    const storedWorlds = JSON.parse(localStorage.getItem(worldListStorageKey()) || '{}');
+    const receipts = new Set([
+        ...Object.values(storedWorlds).flatMap(entry => entry.game?.onlineGiftReceipts || []),
+        ...Object.values(worlds).flatMap(entry => entry.game?.onlineGiftReceipts || [])
+    ]);
+    const acknowledge = [];
+    const next = {...game,onlineGiftReceipts:[...game.onlineGiftReceipts]};
+    const received = new Map();
+    for (const gift of gifts) {
+        const key = gift.seed + 'Seeds';
+        if (typeof gift.id !== 'string' || !Object.hasOwn(game,key) ||
+            !Number.isSafeInteger(gift.amount) || gift.amount < 1 || gift.amount > 100) continue;
+        if (!receipts.has(gift.id)) {
+            if (next[key] !== 'Infinity') next[key] = Math.min(Number.MAX_SAFE_INTEGER,(Number(next[key]) || 0) + gift.amount);
+            next.onlineGiftReceipts.push(gift.id);
+            receipts.add(gift.id);
+            received.set(gift.seed, (received.get(gift.seed) || 0) + gift.amount);
+        }
+        acknowledge.push(gift.id);
+    }
+    const updatedWallet = new Map();
+    for (const change of wallet) {
+        const {id,currency,amount} = change;
+        if (typeof id !== 'string' || !['coins','gems'].includes(currency) ||
+            !Number.isSafeInteger(amount) || amount < 0 || amount > 1e15) continue;
+        if (!receipts.has(id)) {
+            next[currency] = amount;
+            next.onlineGiftReceipts.push(id);
+            receipts.add(id);
+            updatedWallet.set(currency,amount);
+        }
+        acknowledge.push(id);
+    }
+    if (received.size || updatedWallet.size) {
+        next.plotPlants[next.activePlotIndex || 0] = next.plants;
+        const updated = {...worlds,[activeWorldId]:{...world,game:next}};
+        // Změny a jejich potvrzení se uloží společně dřív, než odešleme potvrzení serveru.
+        localStorage.setItem(worldListStorageKey(),JSON.stringify(updated));
+        worlds[activeWorldId] = updated[activeWorldId];
+        game = next;
+        if (received.size) updateInventory();
+        if (updatedWallet.size) {
+            updateCoins();
+            saveGame();
+        }
+        const summary = [
+            ...Array.from(received,([seed,count]) => count + '× ' + plantName(seed)),
+            ...Array.from(updatedWallet,([currency,amount]) => (currency === 'gems' ? '💎 ' : '💰 ') + amount.toLocaleString())
+        ].join(' · ');
+        showMessage(tr('Změny od operátora · ' + summary,
+            'Operator changes · ' + summary,'Änderungen vom Operator · ' + summary));
+    }
+    return acknowledge;
+ }
+
+ function updatePresence() {
+    if (!onlineActive()) return Promise.resolve();
+    if (presenceRequest) return presenceRequest;
+    const token = auth.token;
+    const requestedWorld = activeWorldId;
+    const revision = presenceRevision;
+    const stillActive = () => revision === presenceRevision && auth?.token === token && !!onlineActive();
+    presenceRequest = (async () => {
+        try {
+            const result = await req('/presence',{method:'POST',signal:AbortSignal.timeout(8000)});
+            if (!stillActive()) {
+                if (auth?.token === token && !onlineActive()) await req('/leave',{method:'POST',keepalive:true});
+                return;
+            }
+            const save = () => saveOnlineChanges(result,requestedWorld,stillActive);
+            const ids = navigator.locks ? await navigator.locks.request('gag2d-seed-gifts',save) : save();
+            if (ids.length && stillActive() && await sendProgress() && stillActive() && savedReceiptsContain(ids)) {
+                await req('/gifts/ack',{method:'POST',body:JSON.stringify({ids}),signal:AbortSignal.timeout(8000)});
+            }
+        } catch (error) {
+            if (error.status === 401 && auth?.token === token) forgetChatAccount();
+            // Neuložené nebo nepotvrzené dárky server nabídne znovu.
+        } finally {
+            presenceRequest = null;
+        }
+    })();
+    return presenceRequest;
+ }
+
+ function leaveOnlineWorld() {
+    presenceRevision++;
+    if (auth?.token) req('/leave',{method:'POST',keepalive:true}).catch(()=>{});
+ }
+
+ async function runOperatorCommand(command) {
+    const input = document.getElementById('commandInput');
+    const result = document.getElementById('commandResult');
+    if (!auth?.token) {
+        result.textContent = 'Přihlas se jako operátor simmmix.';
+        showChatAccount(true);
+        return;
+    }
+    if (sendingOperatorCommand) return;
+    sendingOperatorCommand = true;
+    const token = auth.token;
+    try {
+        await updatePresence();
+        if (auth?.token !== token) return;
+        const response = await req('/operator/command',{method:'POST',body:JSON.stringify({command}),signal:AbortSignal.timeout(10000)});
+        const targets = response.username || (response.players + ' účtů');
+        const messages = {
+            ban: response.players ? 'Ban udělen · ' + targets : 'Žádný vybraný účet nedostal nový ban.',
+            unban: response.players ? 'Ban zrušen · ' + targets : 'Žádný z vybraných účtů nemá ban.',
+            variable: 'Nastavení ' + (response.currency === 'gems' ? '💎 ' : '💰 ') +
+                (response.amount ?? 0).toLocaleString() + ' zařazeno · ' + targets,
+            give: '🎁 ' + response.amount + '× ' + (response.seed ? plantName(response.seed) : '') + ' · ' + targets
+        };
+        result.textContent = messages[response.action ?? 'give'];
+        if (input.value.trim() === command) input.value = '';
+        updatePresence();
+    } catch (error) {
+        result.textContent = error.message;
+    } finally {
+        sendingOperatorCommand = false;
+    }
+ }
+
+ setInterval(updatePresence,12000);
+ document.addEventListener('visibilitychange',() => {
+    if (document.hidden) leaveOnlineWorld();
+    else updatePresence();
+ });
+ window.addEventListener('pagehide',leaveOnlineWorld);
+
+ window.gagChat = {
+    runOperatorCommand, updatePresence, leaveOnlineWorld, beginAccountStartup,
+    open() {
+        showChatAccount(!auth?.token);
+        chatNetwork.textContent = chatLog.childElementCount ? "" :
+            tr("Načítám zprávy…", "Loading messages…", "Nachrichten werden geladen…");
+        chatLog.scrollTop = chatLog.scrollHeight;
+        refreshChat();
+    },
+    close() {
+        clearTimeout(chatTimer);
+        clearChatView();
+    },
+    reset() {
+        clearChatView();
+        refreshChat();
+    },
+    username() { return auth?.username; },
+    async send(text,recipient,submitted) {
+        const input = document.getElementById('commandInput');
+        const result = document.getElementById('commandResult');
+        if (!auth?.token) {
+            result.textContent = tr('Pro odeslání zprávy se přihlas nebo si vytvoř účet.',
+                'Sign in or create an account to send a message.', 'Melde dich an oder erstelle ein Konto, um zu schreiben.');
+            showChatAccount(true);
+            return;
+        }
+        if (chatPosting) return;
+        chatPosting = true;
+        const token = auth.token;
+        const view = chatView;
+        const send = document.getElementById('commandRunButton');
+        send.disabled = true;
+        try {
+            await req('/chat',{method:'POST',body:JSON.stringify({text,recipient}),signal:AbortSignal.timeout(10000)});
+            if (isChatOpen() && view === chatView && input.value.trim() === submitted) {
+                input.value = '';
+                result.textContent = '';
+            }
+            refreshChat();
+        } catch (error) {
+            if (!isChatOpen() || view !== chatView || token !== auth?.token) return;
+            if (error.status === 401) {
+                forgetChatAccount();
+                refreshChat();
+                result.textContent = tr('Přihlášení vypršelo. Přihlas se znovu.',
+                    'Your session expired. Sign in again.', 'Deine Sitzung ist abgelaufen. Melde dich erneut an.');
+            } else {
+                result.textContent = error.status === 429
+                    ? tr('Před další zprávou chvíli počkej.', 'Wait a moment before sending again.', 'Warte kurz, bevor du erneut schreibst.')
+                    : [400,404].includes(error.status) ? error.message
+                    : tr('Zprávu se nepodařilo odeslat.', 'Could not send the message.', 'Die Nachricht konnte nicht gesendet werden.');
+            }
+        } finally {
+            chatPosting = false;
+            send.disabled = false;
+        }
+    }
+ };
+ const startAccountUi = () => { addGlobalUI(); beginAccountStartup(); };
+ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',startAccountUi);
+ else startAccountUi();
 })();
 
 </script>
