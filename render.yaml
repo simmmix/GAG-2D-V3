@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: gag-2d-online
+    runtime: node
+    branch: gag-online
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci
+    startCommand: 'test -n "$DATABASE_URL" && test -n "$GAG_OPERATOR_PASSWORD" && npm start'
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: GAG_OPERATOR_PASSWORD
+        sync: false
